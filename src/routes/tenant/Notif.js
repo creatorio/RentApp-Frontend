@@ -23,7 +23,7 @@ send = async (body, day, tenant, month) => {
     // Register Service Worker
     console.log("Registering service worker...");
     var register = await navigator.serviceWorker.register(
-      "../../src/service-worker.js"
+      "../../static/service-worker.js"
     );
     console.log("Service Worker Registered...");
 
