@@ -4,7 +4,7 @@ export default {
   property: "",
   tenant: "",
 };
-const url = `https://yourappname.onrender.com/`; // Replace with your Render URL
+const url = `https://rentapp-backend-3pnf.onrender.com`; // Replace with your Render URL
 const interval = 30000; // Interval in milliseconds (30 seconds)
 
 function reloadWebsite() {

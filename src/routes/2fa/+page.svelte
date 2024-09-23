@@ -15,7 +15,7 @@
       to: email,
       code: code,
     };
-    postData("http://127.0.0.1:3000/verify", queryObj);
+    postData("https://rentapp-backend-3pnf.onrender.com/verify", queryObj);
   }
   function check() {
     if (code == enteredcode) {

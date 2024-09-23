@@ -37,7 +37,7 @@ send = async (body, day, tenant, month) => {
 
     // Send Push Notification
     console.log("Sending Push...");
-    await fetch("http://localhost:3000/subscribe", {
+    await fetch("https://rentapp-backend-3pnf.onrender.com/subscribe", {
       method: "POST",
       body: JSON.stringify({
         tenant: tenant,
@@ -57,7 +57,7 @@ async function sendmonpa(paid, tenant) {
   if (!paid) {
     return;
   }
-  await fetch("http://localhost:3000/subscribe", {
+  await fetch("https://rentapp-backend-3pnf.onrender.com/subscribe", {
     method: "POST",
     body: JSON.stringify({
       sub: tenant,
