@@ -1,0 +1,5 @@
+UI
+Lease delete button disable once lease start
+when rent collected then ask date readonly
+tenant age and id and editable
+delete confirm
