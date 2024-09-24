@@ -87,7 +87,7 @@
 <div class="col w-100 text-center mx-auto">
   <div class="navbar navbar-dark bg-secondary w-100 text-center mx-auto">
     <div class="container-fluid mx-auto">
-      <a class="navbar-brand">Properties</a>
+      <a class="navbar-brand">Tenants</a>
       <button class="btn btn-dark text-light float-end" on:click={back}
         >Back</button
       >

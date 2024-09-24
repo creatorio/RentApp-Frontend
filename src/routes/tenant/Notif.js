@@ -18,7 +18,7 @@ urlBase64ToUint8Array = (base64String) => {
 const publicVapidKey =
   "BMG1_Cwy8C_JRweiURMlkCiYsdmfzzMfjt_fPk1QOUGBdssQJGpuy2rmrSobDQ0ZztHAzFzfNDTn34n_3QmroGM";
 // Register SW, Register Push, Send Push
-send = async (body, day, tenant, month) => {
+send = async (body, day, tenant, month, id) => {
   if ("serviceWorker" in navigator) {
     // Register Service Worker
     console.log("Registering service worker...");
@@ -40,11 +40,11 @@ send = async (body, day, tenant, month) => {
     await fetch("https://rentapp-backend-3pnf.onrender.com/subscribe", {
       method: "POST",
       body: JSON.stringify({
-        tenant: tenant,
+        id: id,
         sub: subscription,
         day: day,
         month: month,
-        notif: JSON.stringify({ title: "Rent Reminder", body: body }),
+        notif: JSON.stringify({ title: "Rent Manager", body: body }),
       }),
       headers: {
         "content-type": "application/json",
@@ -53,14 +53,14 @@ send = async (body, day, tenant, month) => {
     console.log("Push Sent...");
   }
 };
-async function sendmonpa(paid, tenant) {
+async function sendmonpa(paid, id) {
   if (!paid) {
     return;
   }
   await fetch("https://rentapp-backend-3pnf.onrender.com/subscribe", {
     method: "POST",
     body: JSON.stringify({
-      sub: tenant,
+      sub: id,
       paid: paid,
     }),
     headers: {
@@ -69,5 +69,18 @@ async function sendmonpa(paid, tenant) {
   });
   console.log("paid sent");
 }
+async function senddelete(id) {
+  await fetch("https://rentapp-backend-3pnf.onrender.com/subscribe", {
+    method: "POST",
+    body: JSON.stringify({
+      sub: id,
+      deleted: true,
+    }),
+    headers: {
+      "content-type": "application/json",
+    },
+  });
+  console.log("deleted sent");
+}
 export default send;
-export { sendmonpa };
+export { sendmonpa, senddelete };

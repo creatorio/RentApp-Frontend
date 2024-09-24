@@ -1,6 +1,6 @@
 <!-- App.svelte -->
 <script>
-  import { sendmonpa } from "./Notif";
+  import { senddelete, sendmonpa } from "./Notif";
   import send from "./Notif";
   import global from "../Global";
   import { goto } from "$app/navigation";
@@ -8,9 +8,9 @@
   import { onMount, onDestroy } from "svelte";
   import { browser } from "$app/environment";
   import Global from "../Global";
-  const updatemonpa = async (i, id) => {
+  const updatemonpa = async (i, id, idd) => {
     console.log(tenants[i]);
-    sendmonpa(tenants[i].data.monpa[id].paid, tenants[i].tenant);
+    sendmonpa(tenants[i].data.monpa[id].paid, idd);
     await pb.collection("tenantdata").update(tenants[i].id, tenants[i]);
   };
   var cu = $curruntUser;
@@ -50,6 +50,7 @@
     //}
   }
   async function deletepro(id) {
+    senddelete(id);
     await pb.collection("tenantdata").delete(id);
   }
   function back() {
@@ -114,16 +115,7 @@
       }
     }
     console.log(monthsss);
-    for (let i = 0; i < monthsss.length; i++) {
-      const element = monthsss[i];
-      console.log(element);
-      send(
-        "Please Collect Your Rent",
-        parseInt(tenantnew.owdotmdygtr),
-        tenantnew.tenant,
-        element
-      );
-    }
+
     var months = [
       "January",
       "February",
@@ -159,6 +151,16 @@
       }
       tenantnew.data = { monpa };
       await pb.collection("tenantdata").create(tenantnew);
+      for (let i = 0; i < monthsss.length; i++) {
+        const element = monthsss[i];
+        console.log(element);
+        send(
+          "Please Collect Your Rent",
+          parseInt(tenantnew.owdotmdygtr),
+          element,
+          tenants[tenants.length].id
+        );
+      }
     }
   }
   onDestroy(() => {
@@ -293,7 +295,7 @@
                           <td
                             ><input
                               on:change={() => {
-                                updatemonpa(d, id);
+                                updatemonpa(d, id, tenants[d].id);
                               }}
                               bind:checked={tenants[d].data.monpa[id].paid}
                               type="checkbox"
