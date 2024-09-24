@@ -18,29 +18,51 @@ urlBase64ToUint8Array = (base64String) => {
 const publicVapidKey =
   "BMG1_Cwy8C_JRweiURMlkCiYsdmfzzMfjt_fPk1QOUGBdssQJGpuy2rmrSobDQ0ZztHAzFzfNDTn34n_3QmroGM";
 // Register SW, Register Push, Send Push
-send = async (body, day, tenant, month, id) => {
+send = async (body, day, month, id, idd) => {
   if ("serviceWorker" in navigator) {
     // Register Service Worker
     console.log("Registering service worker...");
     var register = await navigator.serviceWorker.register(
-      "https://rent-app-frontend.vercel.app/service-worker.js"
+      "http://localhost:5173/service-worker.js"
     );
     console.log("Service Worker Registered...");
 
     // Register Push
     console.log("Registering Push...");
-    subscription = await register?.pushManager?.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
-    });
+    try {
+      subscription = await register.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
+      });
+    } catch (e) {
+      try {
+        subscription = await register.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
+        });
+      } catch (er) {
+        try {
+          subscription = await register.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
+          });
+        } catch (err) {
+          subscription = await register.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
+          });
+        }
+      }
+    }
     console.log("Push Registered...");
 
     // Send Push Notification
     console.log("Sending Push...");
-    await fetch("https://rentapp-backend-3pnf.onrender.com/subscribe", {
+    await fetch("http://127.0.0.1:3000/subscribe", {
       method: "POST",
       body: JSON.stringify({
         id: id,
+        idd: idd,
         sub: subscription,
         day: day,
         month: month,
@@ -57,7 +79,7 @@ async function sendmonpa(paid, id) {
   if (!paid) {
     return;
   }
-  await fetch("https://rentapp-backend-3pnf.onrender.com/subscribe", {
+  await fetch("http://127.0.0.1:3000/subscribe", {
     method: "POST",
     body: JSON.stringify({
       sub: id,
@@ -70,7 +92,7 @@ async function sendmonpa(paid, id) {
   console.log("paid sent");
 }
 async function senddelete(id) {
-  await fetch("https://rentapp-backend-3pnf.onrender.com/subscribe", {
+  await fetch("http://127.0.0.1:3000/subscribe", {
     method: "POST",
     body: JSON.stringify({
       sub: id,
@@ -82,5 +104,6 @@ async function senddelete(id) {
   });
   console.log("deleted sent");
 }
+
 export default send;
 export { sendmonpa, senddelete };

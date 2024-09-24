@@ -8,9 +8,13 @@
   import { onMount, onDestroy } from "svelte";
   import { browser } from "$app/environment";
   import Global from "../Global";
+  let updated = false;
   const updatemonpa = async (i, id, idd) => {
     console.log(tenants[i]);
-    sendmonpa(tenants[i].data.monpa[id].paid, idd);
+    sendmonpa(
+      tenants[i].data.monpa[id].paid,
+      idd + tenants[i].data.monpa[id].id
+    );
     await pb.collection("tenantdata").update(tenants[i].id, tenants[i]);
   };
   var cu = $curruntUser;
@@ -31,6 +35,7 @@
           const tenant = await pb.collection("tenants").getOne(record.tenant);
           record.expand = { tenant };
           tenants = [...tenants, record];
+          updated = true;
         }
         if (action === "delete") {
           tenants = tenants.filter((m) => m.id !== record.id);
@@ -57,6 +62,7 @@
     goto("/Property");
   }
   async function createtenant() {
+    tenantnew.owdotmdygtr = parseInt(tenantnew.owdotmdygtr, 10);
     var allowed = true;
     for (let i = 0; i < tenants.length; i++) {
       console.log(tenants[i]);
@@ -146,22 +152,34 @@
           num = num - 12;
         }
 
-        monpa.push({ month: months[num], paid: false });
+        monpa.push({ month: months[num], paid: false, i: num });
         num++;
       }
       tenantnew.data = { monpa };
+      console.log(tenantnew);
       await pb.collection("tenantdata").create(tenantnew);
       for (let i = 0; i < monthsss.length; i++) {
         const element = monthsss[i];
-        console.log(element);
-        send(
-          "Please Collect Your Rent",
-          parseInt(tenantnew.owdotmdygtr),
-          element,
-          tenants[tenants.length].id
-        );
+        //     console.log(element);
+        setTimeout(async () => {
+          console.log(
+            tenantnew,
+            tenants,
+            tenants.length,
+            tenants[tenants.length - 1].id
+          );
+
+          await send(
+            "Please Collect Your Rent",
+            parseInt(tenantnew.owdotmdygtr),
+            element,
+            tenants[tenants.length - 1].id + element,
+            tenants[tenants.length - 1].id
+          );
+        }, 5000);
       }
     }
+    updated = false;
   }
   onDestroy(() => {
     unsubscribe?.();
@@ -178,10 +196,6 @@
       tenants[i].startoflease.charAt(5) + tenants[i].startoflease.charAt(6);
     console.log(month);
     month = parseInt(month, 10) - 1;
-    var day =
-      tenants[i].startoflease.charAt(8) + tenants[i].startoflease.charAt(9);
-    console.log(day);
-    day = parseInt(day, 10);
     if (
       month + parseInt(tenants[i].endoflease) > 12 &&
       month + parseInt(tenants[i].endoflease) < 24
@@ -191,10 +205,17 @@
     } else {
       month = month + parseInt(tenants[i].endoflease);
     }
-    day = parseInt(tenants[i].owdotmdygtr, 10);
+    var day = tenants[i].owdotmdygtr;
 
-    console.log(year, month, day);
-    return year + "-" + month + "-" + day;
+    console.log(
+      year,
+      month,
+      day,
+      tenants[i].owdotmdygtr,
+      "calc end of lease",
+      tenants[i]
+    );
+    return (year + "-" + month + "-" + day) / 1;
   };
 </script>
 
@@ -274,9 +295,9 @@
               <div class="card-body">
                 <p>Start of Lease: {tenant.startoflease}</p>
                 <p>
-                  End of Lease: {() => {
-                    calcendlease(d);
-                  }}
+                  End of Lease: {(() => {
+                    return calcendlease(d);
+                  })()}
                 </p>
                 <table
                   class="table table-dark table-hover table-border border border-2"
