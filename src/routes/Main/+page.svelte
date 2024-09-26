@@ -67,6 +67,24 @@
     }
   }
   async function deletepro(id) {
+    await Swal({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      buttons: {
+        cancel: "No, Don't Delete",
+        confirm: { text: "Yes, Delete", value: true },
+      },
+    }).then((result) => {
+      if (!result) {
+        return dp;
+      }
+    });
+    await Swal({
+      title: "Deleted!",
+      text: "Your file has been deleted.",
+      icon: "success",
+    });
     let a = await pb
       .collection("tenants")
       .getList(1, 50, { expand: "property" });

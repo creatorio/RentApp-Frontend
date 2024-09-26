@@ -1,11 +1,10 @@
-import axios from "axios";
 export default {
   verified: false,
   property: "",
   tenant: "",
 };
 const url = "https://rentapp-backend-3pnf.onrender.com/"; // Replace with your Render URL
-const interval = 1000; // Interval in milliseconds (30 seconds)
+const interval = 300000; // Interval in milliseconds (30 seconds)
 
 function reloadWebsite() {
   fetch(url)

@@ -2,6 +2,7 @@
 <script>
   import { senddelete, sendmonpa } from "./Notif";
   import send from "./Notif";
+  import Swal from "sweetalert";
   import global from "../Global";
   import { goto } from "$app/navigation";
   import { pb, curruntUser } from "$lib/Pocketbase";
@@ -55,6 +56,24 @@
     //}
   }
   async function deletepro(id) {
+    await Swal({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      buttons: {
+        cancel: "No, Don't Delete",
+        confirm: { text: "Yes, Delete", value: true },
+      },
+    }).then((result) => {
+      if (!result) {
+        return dp;
+      }
+    });
+    await Swal({
+      title: "Deleted!",
+      text: "Your file has been deleted.",
+      icon: "success",
+    });
     senddelete(id);
     await pb.collection("tenantdata").delete(id);
   }
@@ -152,7 +171,7 @@
           num = num - 12;
         }
 
-        monpa.push({ month: months[num], paid: false, i: num });
+        monpa.push({ month: months[num], paid: false, i: num, date: 0 });
         num++;
       }
       tenantnew.data = { monpa };
@@ -319,7 +338,18 @@
                                 updatemonpa(d, id, tenants[d].id);
                               }}
                               bind:checked={tenants[d].data.monpa[id].paid}
+                              disabled={tenants[d].data.monpa[id].paid}
                               type="checkbox"
+                            /></td
+                          ><td
+                            ><input
+                              on:focusout={() => {
+                                updatemonpa(d, id, tenants[d].id);
+                              }}
+                              bind:value={tenants[d].data.monpa[id].date}
+                              type="date"
+                              disabled={!tenants[d].data.monpa[id].date == 0 ||
+                                !tenants[d].data.monpa[id].paid}
                             /></td
                           >
                         </tr>
