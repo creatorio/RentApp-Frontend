@@ -1,8 +1,11 @@
 <!-- App.svelte -->
 <script>
   import global from "../Global";
+  import Swal from "sweetalert";
   import { goto } from "$app/navigation";
   import { pb, curruntUser } from "$lib/Pocketbase";
+  import { encrypt } from "$lib/Crypto";
+  import { setimage, ArrayBuffertobase64 } from "$lib/BinUtils";
   import { onMount, onDestroy } from "svelte";
   import { browser } from "$app/environment";
   import Global from "../Global";
@@ -11,12 +14,13 @@
   var tenants = [];
   let startoflease;
   let endoflease;
+  let file;
+  let fileencoded;
   var tenantnew = {
     property: null,
     Name: null,
-    owdotmdygtr: null,
-    endoflease: null,
-    startoflease: null,
+    encryptfile: null,
+    iv: null,
   };
   onMount(async () => {
     unsubscribe = await pb
@@ -43,6 +47,16 @@
     Global.tenant = id;
     goto(url);
   }
+  function encodefile() {
+    setTimeout(() => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        fileencoded = ArrayBuffertobase64(e.target.result);
+        console.log(fileencoded);
+      };
+      reader.readAsArrayBuffer(file[0]);
+    }, 1000);
+  }
   function coveri() {
     //FIXME:
     // if (browser) {
@@ -50,17 +64,24 @@
     //  goto("/Login");
     //}
   }
+  function returnNada() {
+    return "";
+  }
   function back() {
     goto("/Main");
   }
   async function createtenant() {
-    tenantnew.property = global.property;
-
-    if (tenantnew.Name != null && tenantnew.property != null) {
-      await pb.collection("tenants").create(tenantnew);
-      tenantnew.Name = null;
+    setTimeout(async () => {
       tenantnew.property = global.property;
-    }
+
+      if (tenantnew.Name != null && tenantnew.property != null) {
+        const data = await encrypt(fileencoded, global.password);
+        tenantnew.encryptfile = data;
+        await pb.collection("tenants").create(tenantnew);
+        tenantnew.Name = null;
+        tenantnew.property = global.property;
+      }
+    }, 1005);
   }
   async function deletepro(id) {
     await Swal({
@@ -129,7 +150,12 @@
                 bind:value={tenantnew.Name}
               />
             </h4>
-
+            <input
+              type="file"
+              class="btn border border-2 border-light"
+              on:change={encodefile}
+              bind:files={file}
+            />
             <button class="btn btn-secondary p-1" on:click={createtenant}
               >Create</button
             >
@@ -155,6 +181,11 @@
                 <h4 class="card-title">
                   <p>{tenant.Name}</p>
                 </h4>
+
+                <iframe id={"embed" + d} />
+                {returnNada(
+                  setimage(tenant.encryptfile, "embed" + d, global.password)
+                )}
                 <p>
                   <button
                     class="btn btn-secondary"

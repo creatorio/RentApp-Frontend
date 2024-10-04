@@ -1,7 +1,9 @@
 <!-- App.svelte -->
 <script>
+  console.log(crypto.subtle)
   import global from "../Global";
   import { goto } from "$app/navigation";
+  import Swal from "sweetalert";
   import { pb, curruntUser } from "$lib/Pocketbase";
   import { onMount, onDestroy } from "svelte";
   import { browser } from "$app/environment";

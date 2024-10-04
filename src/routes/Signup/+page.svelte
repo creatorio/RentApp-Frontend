@@ -2,7 +2,7 @@
 <script>
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
-  import { pb } from "../../lib/Pocketbase";
+  import { pb } from "$lib/Pocketbase";
   onMount(() => {
     captcha();
   });
@@ -95,7 +95,14 @@
       email: formData.email,
     };
     const createduser = await pb.collection("users").create(data);
-    await pb.collection("users").authWithPassword(data.username, data.password);
+    try {
+      await pb
+        .collection("users")
+        .authWithPassword(data.username, data.password);
+    } catch (e) {
+      return;
+    }
+    Global.password = data.password;
     goto("/2fa");
   }
 </script>

@@ -175,7 +175,7 @@
         num++;
       }
       tenantnew.data = { monpa };
-      console.log(tenantnew);
+      console.log(tenantnew,monthsss.length);
       await pb.collection("tenantdata").create(tenantnew);
       for (let i = 0; i < monthsss.length; i++) {
         const element = monthsss[i];
@@ -187,7 +187,7 @@
             tenants.length,
             tenants[tenants.length - 1].id
           );
-
+          console.log(send)
           await send(
             "Please Collect Your Rent",
             parseInt(tenantnew.owdotmdygtr),

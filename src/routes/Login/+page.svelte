@@ -2,7 +2,7 @@
 <script>
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
-  import { pb, curruntUser } from "../../lib/Pocketbase.js";
+  import { pb } from "$lib/Pocketbase.js";
   onMount(() => {
     captcha();
   });
@@ -11,6 +11,7 @@
   let captchaValue = "";
   let cap = { input: "", value: "" };
   import Swal from "sweetalert";
+  import Global from "../Global";
   let errors = {};
   function captcha() {
     const fonts = ["cursive", "sans-serif", "serif", "monospace"];
@@ -68,7 +69,12 @@
       `Please enter otp in the next step.The otp is sent on your email.`,
       "success"
     );
-    await pb.collection("users").authWithPassword(username, password);
+    try {
+      await pb.collection("users").authWithPassword(username, password);
+    } catch (e) {
+      return;
+    }
+    Global.password = password;
     goto("/2fa");
   }
 </script>

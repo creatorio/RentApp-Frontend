@@ -19,6 +19,7 @@ const publicVapidKey =
   "BMG1_Cwy8C_JRweiURMlkCiYsdmfzzMfjt_fPk1QOUGBdssQJGpuy2rmrSobDQ0ZztHAzFzfNDTn34n_3QmroGM";
 // Register SW, Register Push, Send Push
 send = async (body, day, month, id, idd) => {
+  console.log("serviceWorker" in navigator,)
   if ("serviceWorker" in navigator) {
     // Register Service Worker
     console.log("Registering service worker...");

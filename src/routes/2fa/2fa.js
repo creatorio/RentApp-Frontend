@@ -1,11 +1,4 @@
-export function randomotp() {
-  let otp = `${Math.floor(Math.random() * 10)}${Math.floor(
-    Math.random() * 10
-  )}${Math.floor(Math.random() * 10)}${Math.floor(
-    Math.random() * 10
-  )}${Math.floor(Math.random() * 10)}${Math.floor(Math.random() * 10)}`;
-  return otp;
-}
+let code;
 export const postData = async (url = "", data = {}) => {
   const res = await fetch(url, {
     method: "POST",
@@ -21,3 +14,13 @@ export const postData = async (url = "", data = {}) => {
     console.log("ERROR: " + error);
   }
 };
+export const waitForData = async () => {
+  await fetch("/api/2fa").then(async (res) => {
+    code = await res.json();
+    code = parseInt(code.otp);
+  });
+  return code;
+};
+export const getCode = async () => {
+  return code;
+}

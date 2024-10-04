@@ -1,5 +1,39 @@
-UI
+//UI
 Not Going To Do - Lease delete button disable once lease start
 Done - when rent collected then ask date readonly
-//tenant age and id and editable
+Done - tenant docs
 Done - Delete Confirm
+Done - Server-side otp
+
+Ignore This, this is for my information:
++server.js may contain functions that respond to GET POST PATCH, etc. These are standalone api routes. They are like a different layer from the page that will be rendered. If I am using +server.js files, they are often nested within a top level api directory in routes/api/...../+server.js
+
++page.js only describes a load function to gather data that will render on a page. It's not meant to handle "headless" api style requests like +server.js. +page.js load function may run on either browser or server
+
++page.server.js does the same as +page.js, but it will definitely run on the server. You will have to learn when you have to make this distinction. As it says in the docs
+ for example, use the server one if you are connecting to a db in that load function (you probably don't want to/can't make a db query from client side). I'm not totally sure if you can have a +page.server.js and a +page.js serving load function for the same route, but I can't think of a beginner use for that anyways. They perform the same task.
+
+A common pattern would be to have a +server.js providing a GET request handler for a user data model and another +server.js providing a GET request handler for a tweet data model. +page.js (or +page.server.js) may, in their load function, make a request to both of these api endpoints. you would structure this as such
+
+routes/
+    timeline/
+        +page.svelte
+        +page.js
+    api/
+        users/
+            [userId]/
+                +server.js
+        tweets/
+            [tweetId]/
+                +server.js
+The +server.js api routes will have access to env var that allows them to, for example, query the db for the user and the tweet. The load function in +page.js asks for server to do this work like fetch('api/tweets/1') and fetch('api/users/2'). The data that this load function returns will be data prop in +page.svelte.
+
+The other way you might do this uses +page.server.js and no api routes so:
+
+routes/
+    timeline/
+        +page.svelte
+        +page.server.js
+In this case, since +page.server.js runs on the server, it will reasonably have access to db connection string and things like that that you want to keep (at least) semi secret. The +page.server.js will again have a load function that makes the db query and just like the +page.js from the previous flow, it can return the user and tweet data to be used as data prop.
+
+In the use case example I've given, it probably is much easier to avoid the api routes. However if you need to PUT POST PATCH or whatever, it will probably start making sense to have your standalone, +server.js files handling all database interactions and other, more-backend stuff instead of +page.server.js.

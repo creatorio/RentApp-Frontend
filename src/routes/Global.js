@@ -2,6 +2,7 @@ export default {
   verified: false,
   property: "",
   tenant: "",
+  password:"",
 };
 const url = "https://rentapp-backend-3pnf.onrender.com/"; // Replace with your Render URL
 const interval = 300000; // Interval in milliseconds (30 seconds)
