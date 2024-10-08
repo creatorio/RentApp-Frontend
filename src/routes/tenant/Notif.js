@@ -19,13 +19,11 @@ const publicVapidKey =
   "BMG1_Cwy8C_JRweiURMlkCiYsdmfzzMfjt_fPk1QOUGBdssQJGpuy2rmrSobDQ0ZztHAzFzfNDTn34n_3QmroGM";
 // Register SW, Register Push, Send Push
 send = async (body, day, month, id, idd) => {
-  console.log("serviceWorker" in navigator,)
+  console.log("serviceWorker" in navigator);
   if ("serviceWorker" in navigator) {
     // Register Service Worker
     console.log("Registering service worker...");
-    var register = await navigator.serviceWorker.register(
-      "http://localhost:5173/service-worker.js"
-    );
+    var register = await navigator.serviceWorker.register("/service-worker.js");
     console.log("Service Worker Registered...");
 
     // Register Push
@@ -59,7 +57,7 @@ send = async (body, day, month, id, idd) => {
 
     // Send Push Notification
     console.log("Sending Push...");
-    await fetch("http://127.0.0.1:3000/subscribe", {
+    await fetch("https://rentapp-backend-3pnf.onrender.com/subscribe", {
       method: "POST",
       body: JSON.stringify({
         id: id,
@@ -80,7 +78,7 @@ async function sendmonpa(paid, id) {
   if (!paid) {
     return;
   }
-  await fetch("http://127.0.0.1:3000/subscribe", {
+  await fetch("https://rentapp-backend-3pnf.onrender.com/subscribe", {
     method: "POST",
     body: JSON.stringify({
       sub: id,
@@ -93,7 +91,7 @@ async function sendmonpa(paid, id) {
   console.log("paid sent");
 }
 async function senddelete(id) {
-  await fetch("http://127.0.0.1:3000/subscribe", {
+  await fetch("https://rentapp-backend-3pnf.onrender.com/subscribe", {
     method: "POST",
     body: JSON.stringify({
       sub: id,

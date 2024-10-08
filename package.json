@@ -20,6 +20,7 @@
     "@coast-team/mute-crypto-helper": "^1.0.4",
     "axios": "^1.7.7",
     "buffer": "^6.0.3",
+    "jquery": "^3.7.1",
     "pocketbase": "^0.21.1",
     "sweetalert": "^2.1.2",
     "web-push": "^3.6.7",

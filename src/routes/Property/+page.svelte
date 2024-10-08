@@ -13,6 +13,8 @@
   let unsubscribe;
   var tenants = [];
   let startoflease;
+  let inputfile;
+  let trigger;
   let endoflease;
   let file;
   let fileencoded;
@@ -42,15 +44,21 @@
       .collection("tenants")
       .getList(1, 50, { expand: "Property" });
     tenants = a.items;
+    tenants = tenants.filter((e) => {
+      console.log(e.property);
+      console.log(global.property);
+      return e.property == global.property;
+    });
   });
   function gotosecure(url, id) {
     Global.tenant = id;
     goto(url);
   }
-  function encodefile() {
-    setTimeout(() => {
+  async function encodefile() {
+    let done = false;
+    setTimeout(async () => {
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = async (e) => {
         fileencoded = ArrayBuffertobase64(e.target.result);
         console.log(fileencoded);
       };
@@ -58,11 +66,10 @@
     }, 1000);
   }
   function coveri() {
-    //FIXME:
-    // if (browser) {
-    //  console.log("No login");
-    //  goto("/Login");
-    //}
+    if (browser) {
+      console.log("No login");
+      goto("/Login");
+    }
   }
   function returnNada() {
     return "";
@@ -123,6 +130,7 @@
 {#if !global.property && browser}
   {goto("/Main")}
 {/if}
+
 <div class="col w-100 text-center mx-auto">
   <div class="navbar navbar-dark bg-secondary w-100 text-center mx-auto">
     <div class="container-fluid mx-auto">
@@ -144,70 +152,108 @@
       <div id="demo" class="text-light text-center collapse w-100 mx-auto">
         <div class="card mx-auto text-center">
           <div class="card-body">
-            <h4 class="card-title title-text">
+            <p>
+              <label for="name" class="form-label">Name:</label>
               <input
-                class="btn border border-2 border-light"
+                id="name"
+                class="btn border border-rounded border-2"
                 bind:value={tenantnew.Name}
               />
-            </h4>
-            <input
-              type="file"
-              class="btn border border-2 border-light"
-              on:change={encodefile}
-              bind:files={file}
-            />
-            <button class="btn btn-secondary p-1" on:click={createtenant}
-              >Create</button
-            >
+            </p>
+
+            <p>
+              <input
+                type="file"
+                id="file"
+                on:change={encodefile}
+                bind:files={file}
+              /><label for="file" class="btn border border-rounded border-2">
+                Select file
+              </label>
+            </p>
+            <p>
+              <button class="btn btn-secondary p-1" on:click={createtenant}
+                >Create</button
+              >
+            </p>
           </div>
         </div>
       </div>
     </div>
-    {#key tenants}
-      {#each tenants as tenant, d}
-        <div class="w-100 text-center mx-auto">
-          <button
-            data-bs-toggle="collapse"
-            data-bs-target="#demo{d}"
-            class="w-100 btn btn-secondary mt-3 mid"
-            >{tenant.Name}
-          </button>
-          <div
-            id="demo{d}"
-            class="text-light text-center collapse w-100 mx-auto"
-          >
-            <div class="card mx-auto text-center">
-              <div class="card-body">
-                <h4 class="card-title">
-                  <p>{tenant.Name}</p>
-                </h4>
 
-                <iframe id={"embed" + d} />
+    <div class="table-responsive">
+      <table class="table-condensed table-bordered mt-3 table">
+        <thead>
+          <tr><th>Name</th><th>ID Proof</th><th>Details</th><th>Delete</th></tr>
+        </thead>
+        <tbody>
+          {#each tenants as tenant, d}
+            <tr
+              ><td class="text-wrap"> {tenant.Name} </td><td class="text-wrap">
+                <!-- Modal -->
+                <div
+                  id={"myModal" + d}
+                  class="modal fade modal-lg"
+                  role="dialog"
+                >
+                  <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h4 class="modal-title">ID Proof</h4>
+                      </div>
+                      <div class="modal-body">
+                        <embed id={"embed" + d} />
+                      </div>
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          class="btn btn-default"
+                          data-bs-dismiss="modal">Close</button
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  class="bg-dark border-0"
+                  data-bs-toggle="modal"
+                  data-bs-target={"#myModal" + d}>View Pdf</button
+                >
                 {returnNada(
                   setimage(tenant.encryptfile, "embed" + d, global.password)
-                )}
-                <p>
-                  <button
-                    class="btn btn-secondary"
-                    on:click={() => {
-                      deletepro(tenant.id);
-                    }}>Delete this tenant's info from the database</button
-                  >
-                </p>
+                )}</td
+              ><td class="text-wrap">
                 <button
-                  class="btn btn-secondary p-1"
+                  class="bg-dark border-0"
                   on:click={gotosecure("/tenant", tenant.id)}>Details</button
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-      {/each}
-    {/key}
+                ></td
+              ><td class="text-wrap">
+                <button
+                  class="bg-dark border-0"
+                  on:click={() => {
+                    deletepro(tenant.id);
+                  }}>Delete Info</button
+                ></td
+              ></tr
+            >
+          {/each}
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 
 <style>
+  .table-condensed > thead > tr > th,
+  .table-condensed > tbody > tr > th,
+  .table-condensed > tfoot > tr > th,
+  .table-condensed > thead > tr > td,
+  .table-condensed > tbody > tr > td,
+  .table-condensed > tfoot > tr > td {
+    padding: 1px;
+  }
   .title-text {
     font-family: monospace;
   }
@@ -215,5 +261,15 @@
     display: inline-block;
     vertical-align: middle;
     align-items: center;
+  }
+  input[type="file"] {
+    display: none;
+  }
+
+  .custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
   }
 </style>

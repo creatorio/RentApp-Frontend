@@ -85,24 +85,24 @@
 
 <div class="mt-5 mx-auto">
   <div class="mb-3 w-75 container mx-auto">
-    <label for="email" class="form-label">Username</label>
+    <label for="email" class="form-label">Username:</label>
     <input
-      class="form-control bg-secondary text-light"
+      class="form-control bg-dark text-light border border-light border-2"
       id="email"
       bind:value={username}
     />
   </div>
   <div class="mb-3 w-75 container mx-auto">
-    <label for="password" class="form-label">Password</label>
+    <label for="password" class="form-label">Password:</label>
     <input
       type="password"
-      class="form-control bg-secondary text-light"
+      class="form-control bg-dark text-light border border-light border-2"
       id="password"
       bind:value={password}
     />
 
     <div class="captcha">
-      <label for="captcha-input" class="caplabel">Enter Captcha</label>
+      <label for="captcha-input" class="form-label">Captcha:</label>
       <div class="preview"></div>
       <div class="captcha-form">
         <input
@@ -113,13 +113,24 @@
           bind:value={inputCaptchaValue}
         />
         <button class="captcha-refresh">
-          <i class="fa fa-refresh"></i>
+          <svg
+            id="Layer_1"
+            data-name="Layer 1"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 118.04 122.88"
+            ><path
+              d="M16.08,59.26A8,8,0,0,1,0,59.26a59,59,0,0,1,97.13-45V8a8,8,0,1,1,16.08,0V33.35a8,8,0,0,1-8,8L80.82,43.62a8,8,0,1,1-1.44-15.95l8-.73A43,43,0,0,0,16.08,59.26Zm22.77,19.6a8,8,0,0,1,1.44,16l-10.08.91A42.95,42.95,0,0,0,102,63.86a8,8,0,0,1,16.08,0A59,59,0,0,1,22.3,110v4.18a8,8,0,0,1-16.08,0V89.14h0a8,8,0,0,1,7.29-8l25.31-2.3Z"
+            /></svg
+          >
         </button>
       </div>
     </div>
-    <div class="p mt-4">
+    <div class="p mt-4 mx-auto">
       <h6>
-        Don't have an account, <a href="/Signup">Signup</a><button
+        <div class="float-start">
+          Don't have an account, <a href="/Signup">Signup</a>
+        </div>
+        <button
           type="submit"
           class="btn btn-secondary float-end"
           id="login-btn"
@@ -132,16 +143,8 @@
 
 <style>
   .p {
-    padding-left: 14vw;
-    padding-right: 14vw;
     display: grid;
     align-items: center;
-  }
-  .caplabel {
-    display: block;
-    font-size: 15px;
-    color: #111;
-    margin-bottom: 5px;
   }
   .captcha {
     margin: 15px 0px;
@@ -153,12 +156,14 @@
     height: 40px;
     line-height: 40px;
     letter-spacing: 8px;
-    border: 1px dashed #888;
+    border-top: 1px solid;
+    border-right: 1px solid;
+    border-left: 1px solid;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    border-width: 1.5px;
+    border-color: aliceblue;
     font-family: "monospace";
-  }
-  .capspan {
-    display: inline-block;
-    user-select: none;
   }
   .captcha-form {
     display: flex;
@@ -166,14 +171,19 @@
   .capinput {
     width: 100%;
     padding: 8px;
-    border: 1px solid #888;
+    border-bottom: 1px solid #888;
+    border-left: 1px solid #888;
+    border-width: 1.5px;
+    border-color: aliceblue;
+    border-bottom-left-radius: 7px;
   }
   .captcha-refresh {
     width: 40px;
-    border: none;
-    outline: none;
-    background: #888;
-    color: #eee;
+    border-bottom: 1px solid #888;
+    border-right: 1px solid #888;
+    border-width: 1.5px;
+    border-color: aliceblue;
+    border-bottom-right-radius: 7px;
     cursor: pointer;
   }
 </style>

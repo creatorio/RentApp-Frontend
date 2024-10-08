@@ -1,9 +1,13 @@
-//UI
+Done - UI
 Not Going To Do - Lease delete button disable once lease start
 Done - when rent collected then ask date readonly
 Done - tenant docs
 Done - Delete Confirm
 Done - Server-side otp
+
+// = Doing
+Done = Finished
+? = Review Pending / Need To Ask Ouestions
 
 Ignore This, this is for my information:
 +server.js may contain functions that respond to GET POST PATCH, etc. These are standalone api routes. They are like a different layer from the page that will be rendered. If I am using +server.js files, they are often nested within a top level api directory in routes/api/...../+server.js

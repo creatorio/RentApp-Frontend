@@ -112,70 +112,75 @@
 </div>
 
 <form on:submit={handleSubmit} class="bg-dark text-light">
-  <table class="mx-auto text-center">
+  <table class="mx-auto w-60 mt-2">
     <tr>
       <td
         ><div class="mb-3 mx-auto w-40 container">
-          <label for="name" class="form-label">Email</label>
+          <label for="name" class="form-label">Email:</label>
           <input
             class="form-control border-2 bg-secondary text-light"
             id="name"
             bind:value={formData.email}
-          />
-          {#if errors.email}<div class="invalid-feedback">
-              {errors.email}
-            </div>{/if}
+          />{#key errors.email}
+            {#if errors.email}<div class="invalid-feedback">
+                {errors.email}
+              </div>{/if}
+          {/key}
         </div>
       </td>
       <td
         ><div class="mb-3 mx-auto w-40 container">
-          <label for="email" class="form-label">Username(No Spaces)</label>
+          <label for="email" class="form-label">Username:</label>
           <input
             class="form-control border-2 bg-secondary text-light"
             id="email"
             bind:value={formData.username}
           />
-          {#if errors.username}<div class="invalid-feedback">
-              {errors.username}
-            </div>{/if}
+          {#key errors.username}
+            {#if errors.username}<div class="invalid-feedback">
+                {errors.username}
+              </div>{/if}
+          {/key}
         </div>
       </td>
     </tr>
     <tr>
       <td
         ><div class="mb-3 mx-auto w-40 container">
-          <label for="password" class="form-label">Password(No Spaces)</label>
+          <label for="password" class="form-label">Password:</label>
           <input
             type="password"
             class="form-control border-2 bg-secondary text-light"
             id="password"
             bind:value={formData.password}
-          />
-          {#if errors.password}<div class="invalid-feedback">
-              {errors.password}
-            </div>{/if}
+          />{#key errors.password}
+            {#if errors.password}<div class="invalid-feedback">
+                {errors.password}
+              </div>{/if}
+          {/key}
         </div>
       </td>
       <td>
         <div class="mb-3 mx-auto w-40 container">
           <label for="confirmPassword" class="form-label"
-            >Confirm Password(No Spaces)</label
+            >Confirm Pwd:</label
           >
           <input
             type="password"
             class="form-control border-2 bg-secondary text-light"
             id="confirmPassword"
             bind:value={formData.passwordConfirm}
-          />
-          {#if errors.confirmPassword}<div class="invalid-feedback">
-              {errors.confirmPassword}
-            </div>{/if}
+          />{#key errors.confirmPassword}
+            {#if errors.confirmPassword}<div class="invalid-feedback">
+                {errors.confirmPassword}
+              </div>{/if}
+          {/key}
         </div>
       </td>
     </tr>
   </table>
   <div class="captcha w-75 mx-auto">
-    <label for="captcha-input" class="caplabel">Enter Captcha</label>
+    <label for="captcha-input" class="form-label">Captcha:</label>
     <div class="preview"></div>
     <div class="captcha-form">
       <input
@@ -186,18 +191,26 @@
         bind:value={inputCaptchaValue}
       />
       <button class="captcha-refresh">
-        <i class="fa fa-refresh"></i>
+        <svg
+          id="Layer_1"
+          data-name="Layer 1"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 118.04 122.88"
+          ><path
+            d="M16.08,59.26A8,8,0,0,1,0,59.26a59,59,0,0,1,97.13-45V8a8,8,0,1,1,16.08,0V33.35a8,8,0,0,1-8,8L80.82,43.62a8,8,0,1,1-1.44-15.95l8-.73A43,43,0,0,0,16.08,59.26Zm22.77,19.6a8,8,0,0,1,1.44,16l-10.08.91A42.95,42.95,0,0,0,102,63.86a8,8,0,0,1,16.08,0A59,59,0,0,1,22.3,110v4.18a8,8,0,0,1-16.08,0V89.14h0a8,8,0,0,1,7.29-8l25.31-2.3Z"
+          /></svg
+        >
       </button>
       {#if errors.password}<div class="invalid-feedback">
           {errors.password}
         </div>{/if}
     </div>
   </div>
-  <div class="p">
+  <div class="p w-75 mx-auto">
     <h6>
       Already have an account, <a href="/Login">Login</a><button
         type="submit"
-        class="btn btn-secondary float-end mt-3">Signup</button
+        class="btn btn-secondary float-end">Signup</button
       >
     </h6>
   </div>
@@ -205,19 +218,14 @@
 
 <style>
   .w-40 {
-    width: 40vw;
+    width: 38.5vw;
+  }
+  .w-60 {
+    width: 60vw;
   }
   .p {
-    padding-left: 12vw;
-    padding-right: 12vw;
     display: grid;
     align-items: center;
-  }
-  .caplabel {
-    display: block;
-    font-size: 15px;
-    color: #111;
-    margin-bottom: 5px;
   }
   .captcha {
     margin: 15px 0px;
@@ -229,12 +237,14 @@
     height: 40px;
     line-height: 40px;
     letter-spacing: 8px;
-    border: 1px dashed #888;
+    border-top: 1px solid;
+    border-right: 1px solid;
+    border-left: 1px solid;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    border-width: 1.5px;
+    border-color: aliceblue;
     font-family: "monospace";
-  }
-  .capspan {
-    display: inline-block;
-    user-select: none;
   }
   .captcha-form {
     display: flex;
@@ -242,14 +252,19 @@
   .capinput {
     width: 100%;
     padding: 8px;
-    border: 1px solid #888;
+    border-bottom: 1px solid #888;
+    border-left: 1px solid #888;
+    border-width: 1.5px;
+    border-color: aliceblue;
+    border-bottom-left-radius: 7px;
   }
   .captcha-refresh {
     width: 40px;
-    border: none;
-    outline: none;
-    background: #888;
-    color: #eee;
+    border-bottom: 1px solid #888;
+    border-right: 1px solid #888;
+    border-width: 1.5px;
+    border-color: aliceblue;
+    border-bottom-right-radius: 7px;
     cursor: pointer;
   }
 </style>

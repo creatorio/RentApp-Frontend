@@ -1,6 +1,6 @@
 <!-- App.svelte -->
 <script>
-  console.log(crypto.subtle)
+  console.log(crypto.subtle);
   import global from "../Global";
   import { goto } from "$app/navigation";
   import Swal from "sweetalert";
@@ -42,11 +42,11 @@
     goto(url);
   }
   function coveri() {
-    //FIXME:
-    // if (browser) {
-    //  console.log("No login");
-    //  goto("/Login");
-    //}
+
+     if (browser) {
+      console.log("No login");
+      goto("/Login");
+    }
   }
   function Logout() {
     pb.authStore.clear();
@@ -127,74 +127,99 @@
       >
 
       <div id="demo" class="text-light text-center collapse w-100 mx-auto">
-        <div class="card mx-auto text-center">
+        <div class="card border border-2 mx-auto text-center">
           <div class="card-body">
-            <h4 class="card-title title-text">
+            <div class="mx-auto w-75">
+              <label for="nam" class="form-label float-start">Name:</label>
               <input
-                class="btn border border-2 border-light"
+                id="nam"
+                class="form-control bg-dark text-light border border-light border-2"
                 bind:value={propertynew.name}
               />
-            </h4>
-            <p>
-              This property is located at <input
-                class="btn border border-2 border-light"
+
+              <label for="loc" class="mt-2 form-label float-start"
+                >Location:</label
+              >
+              <input
+                id="loc"
+                class="form-control bg-dark text-light border border-light border-2"
                 bind:value={propertynew.location}
               />
-            </p>
-            <p>
-              This property can accommodate <input
-                class="btn border border-2 border-light"
+
+              <label for="acc" class="mt-2 form-label float-start"
+                >Number Of Tenants:</label
+              >
+              <input
+                id="acc"
+                class="form-control bg-dark text-light border border-light border-2"
                 bind:value={propertynew.numberoftenants}
-              /> people
-            </p>
+              />
 
-            <button class="btn btn-secondary p-1" on:click={createproperty}
-              >Create</button
-            >
-          </div>
-        </div>
-      </div>
-    </div>
-
-    {#each properties as property, d}
-      <div class="w-100 text-center mx-auto">
-        <button
-          data-bs-toggle="collapse"
-          data-bs-target="#demo{d}"
-          class="w-100 btn btn-secondary mt-3 mid"
-          >{property.name}
-        </button>
-        <div id="demo{d}" class="text-light text-center collapse w-100 mx-auto">
-          <div class="card mx-auto text-center">
-            <div class="card-body">
-              <h4 class="card-title">
-                <p>{property.name}</p>
-              </h4>
-              <p>This property is located at {property.location}</p>
-              <p>
-                This property can accommodate {property.numberoftenants} people
-              </p>
-              <p>
-                <button
-                  class="btn btn-secondary"
-                  on:click={() => {
-                    deletepro(property.id);
-                  }}>Delete this property</button
-                >
-              </p>
               <button
-                class="btn btn-secondary p-1"
-                on:click={gotosecure("/Property", property.id)}>Details</button
+                class="form-control bg-secondary text-light mt-2"
+                on:click={createproperty}>Create</button
               >
             </div>
           </div>
         </div>
       </div>
-    {/each}
+    </div>
+    <div class="table-responsive">
+      <table class="table-condensed table-bordered mt-3 table">
+        <thead>
+          <tr
+            ><th>Name</th><th>Location</th><th>Tenants #</th><th>Details</th><th
+              >Delete</th
+            ></tr
+          >
+        </thead>
+        <tbody>
+          {#each properties as property, d}
+            <tr
+              ><td class="text-wrap"> {property.name} </td><td class="text-wrap"
+                >{property.location}</td
+              ><td class="text-wrap">{property.numberoftenants}</td><td
+                class="text-wrap"
+              >
+                <button
+                  class="bg-dark border-0"
+                  on:click={() => {
+                    gotosecure("/Property", properties[d].id);
+                  }}>Details</button
+                ></td
+              ><td class="text-wrap">
+                <button
+                  class="bg-dark border-0"
+                  on:click={() => {
+                    deletepro(property.id);
+                  }}>Delete this property</button
+                ></td
+              ></tr
+            >
+          {/each}
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 
 <style>
+  .table-condensed > thead > tr > th,
+  .table-condensed > tbody > tr > th,
+  .table-condensed > tfoot > tr > th,
+  .table-condensed > thead > tr > td,
+  .table-condensed > tbody > tr > td,
+  .table-condensed > tfoot > tr > td {
+    padding: 1px;
+  }
+  td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .w-90 {
+    width: 97.5vw;
+  }
   .title-text {
     font-family: monospace;
   }

@@ -50,10 +50,10 @@
     tenants = a.items;
   });
   function coveri() {
-    // if (browser) {
-    //  console.log("No login");
-    //  goto("/Login");
-    //}
+    if (browser) {
+      console.log("No login");
+      goto("/Login");
+    }
   }
   async function deletepro(id) {
     await Swal({
@@ -175,7 +175,7 @@
         num++;
       }
       tenantnew.data = { monpa };
-      console.log(tenantnew,monthsss.length);
+      console.log(tenantnew, monthsss.length);
       await pb.collection("tenantdata").create(tenantnew);
       for (let i = 0; i < monthsss.length; i++) {
         const element = monthsss[i];
@@ -187,7 +187,7 @@
             tenants.length,
             tenants[tenants.length - 1].id
           );
-          console.log(send)
+          console.log(send);
           await send(
             "Please Collect Your Rent",
             parseInt(tenantnew.owdotmdygtr),
@@ -234,7 +234,7 @@
       "calc end of lease",
       tenants[i]
     );
-    return (year + "-" + month + "-" + day) / 1;
+    return year + "-" + month + "-" + day;
   };
 </script>
 
@@ -325,6 +325,7 @@
                     <tr>
                       <th>Month</th>
                       <th>Paid</th>
+                      <th>Date</th>
                     </tr>
                   </thead>
                   <tbody>
