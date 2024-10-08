@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
   import { pb } from "$lib/Pocketbase";
-  import { Global } from "../Global";
+  import Global from "../Global";
   onMount(() => {
     captcha();
   });
