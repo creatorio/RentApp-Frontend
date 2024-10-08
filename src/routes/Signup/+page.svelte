@@ -3,6 +3,7 @@
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
   import { pb } from "$lib/Pocketbase";
+  import { Global } from "../Global";
   onMount(() => {
     captcha();
   });
@@ -162,9 +163,7 @@
       </td>
       <td>
         <div class="mb-3 mx-auto w-40 container">
-          <label for="confirmPassword" class="form-label"
-            >Confirm Pwd:</label
-          >
+          <label for="confirmPassword" class="form-label">Confirm Pwd:</label>
           <input
             type="password"
             class="form-control border-2 bg-secondary text-light"
