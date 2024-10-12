@@ -1,38 +1,20 @@
-# create-svelte
+# Rent App
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+This is an app that I built to manage properties that are given on rent.
 
-## Creating a project
+This is the [`link`](https://rental-property-manager.vercel.app/) to the app incase you want to use it.
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Language And Framework
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+This is the repository for the code that comprises the frontend of this app.
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+This app's frontend is written using three languages HTML, JavaScript and CSS and it uses SvelteKit as the framework.
 
-## Developing
+## Hosting
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+The frontend is hosted using Vercel
 
-```bash
-npm run dev
+The backend is hosted using Render
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+The database is hosted using Pockethost
 
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
